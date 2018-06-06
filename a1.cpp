@@ -1,17 +1,26 @@
-#include <iostream>
-#include <fstream>
-#include <semaphore.h>
-#include <pthread.h>
+/*
+    Assignment 1 CS 570
+    Guy Leonard
+
+    Alfonso Herrera
+    Pierre Kharat
+
+
+*/
+
+#include "a1.h"
 
 using namespace std;
 
-void pthreadWork();
+static void *pthreadWork(void *num);
 
-pthread_t player[4];
+pthread_t player[NUM_THREADS]; //Defining the number of threads
 
-string cards = {"A","2","3","4",
-                "5","6","7","8",
-                "9","10","J","Q","K"};
+sem_t FLAG; //Flag for mutual exclusion purposes
+
+const char* cards[13] = {"A","2","3","4",
+                    "5","6","7","8",
+                    "9","10","J","Q","K"};
 
 int main () {
 
@@ -22,23 +31,25 @@ int main () {
     outfile.close();
 
 
-    sem_init() FLAG = 1;
+    sem_init(&FLAG,0,1);
 
     for(int i = 0; i < 4; i++){
 
+        pthread_create(&player[i], NULL, pthreadWork,(void *)i); //For testing purposes just passing the variable "i" as an argument
 
     }
 
-    sem_destroy(FLAG);
+    sem_destroy(&FLAG);
 
-    cout >> "Thank you have a nice day :)" >> endl;
+    cout << "Thank you have a nice day :)" << endl;
+
+    pthread_exit(NULL);
 
     return 0;
 }
 
-void pthreadWork(){
-
-
+void *pthreadWork(void *num){ //Just trying to
+    cout << endl << cards[(int) num] << endl;
 }
 
 
