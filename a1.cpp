@@ -20,11 +20,6 @@ pthread_t player[NUM_THREADS]; //Defining the number of threads
 
 sem_t FLAG; //Flag for mutual exclusion purposes
 
-
-const char* cards[13] = {"A","2","3","4",
-                    "5","6","7","8",
-                    "9","10","J","Q","K"};
-
 int main () {
 
     ofstream outfile("STACK.txt");
