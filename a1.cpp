@@ -2,8 +2,9 @@
     Assignment 1 CS 570
     Guy Leonard
 
-    Alfonso Herrera
     Pierre Kharat
+    Alfonso Herrera
+
 
 
 */
@@ -12,76 +13,128 @@
 
 using namespace std;
 
-//static void *pthreadWork(void *num);
-
-
-
 pthread_t player[NUM_THREADS]; //Defining the number of threads
 
 sem_t FLAG; //Flag for mutual exclusion purposes
 
+fstream outfile;
+
 int main () {
 
-    ofstream outfile("STACK.txt");
+    outfile.open("STACK.txt", fstream::out | fstream::trunc);
 
-    outfile << getpid() << "\r\n";
+    outfile << getpid() << "\r\n\n";
 
     outfile.close();
 
     sem_init(&FLAG,0,1); //Initialize the FLAGb
 
+    pthread_create(&player[0], NULL, &diamond_Card, NULL); //
+    pthread_create(&player[1], NULL, &club_Card, NULL); //
+    pthread_create(&player[2], NULL, &heart_Card, NULL); //
+    pthread_create(&player[3], NULL, &spade_Card, NULL); //
 
-    for(int i = 0; i < 4; i++){
-
-        switch(i){
-
-        case 0: // Diamond runs its job
-            pthread_create(&player[0], NULL, &diamond_Card, (void *)FLAG); //
-
-        case 1: // Clubs runs its job
-            pthread_create(&player[1], NULL, &club_Card, (void *)FLAG); //
-
-        case 2: // Hearts runs its job
-            pthread_create(&player[2], NULL, &heart_Card, (void *)FLAG); //
-
-        case 3: // Spades runs its job
-            pthread_create(&player[3], NULL, &spade_Card, (void *)FLAG); //
-        }
-    }
+    pthread_join(player[0],NULL);
+    pthread_join(player[1],NULL);
+    pthread_join(player[2],NULL);
+    pthread_join(player[3],NULL);
 
     sem_destroy(&FLAG);
 
     cout << "Thank you have a nice day :)" << endl;
 
-    pthread_exit(NULL);
-
     return 0;
 }
 
-//void *pthreadWork(void *num){ //Just trying to
-//    cout << endl << cards[(int) num] << endl;
-//}
+void *diamond_Card(void *i){
 
-void *diamond_Card(void *f){
+    unsigned int microseconds = 125;
 
-    cout << cards[0] << " Diamond"<< endl;
+    for(int i = 0; i < 13; i++){
+
+        sem_wait(&FLAG);
+
+        outfile.open("STACK.txt", fstream::app);
+
+        cout << "Thread " << pthread_self() <<" is running" << endl;
+
+        outfile << "Diamond " << cards[i] << "\r\n";
+
+        outfile.close();
+
+        sem_post(&FLAG);
+
+        usleep(microseconds);
+    }
+
     pthread_exit(NULL);
 }
 
-void *club_Card(void *f){
+void *club_Card(void *i){
 
-    cout << cards[2] << " Club"<< endl;
+    unsigned int microseconds = 250;
+
+    for(int i = 0; i < 13; i++){
+
+        sem_wait(&FLAG);
+
+        outfile.open("STACK.txt", fstream::app);
+
+        cout << "Thread " << pthread_self() <<" is running" << endl;
+
+        outfile << "Club " << cards[i] << "\r\n";
+
+        outfile.close();
+
+        sem_post(&FLAG);
+
+        usleep(microseconds);
+    }
     pthread_exit(NULL);
 }
 
-void *heart_Card(void *f){
+void *heart_Card(void *i){
 
-    cout << cards[9] << " Heart"<< endl;
-    pthread_exit(NULL);
+    unsigned int microseconds = 500;
+
+    for(int i = 0; i < 13; i++){
+
+        sem_wait(&FLAG);
+
+        outfile.open("STACK.txt", fstream::app);
+
+        cout << "Thread " << pthread_self() <<" is running" << endl;
+
+        outfile << "Heart " << cards[i] << "\r\n";
+
+        outfile.close();
+
+        sem_post(&FLAG);
+
+        usleep(microseconds);
+    }
+        pthread_exit(NULL);
 }
 
-void *spade_Card(void *f){
+void *spade_Card(void *i){
 
-    cout << cards[12] << " Spade"<< endl;
-    pthread_exit(NULL);
+    unsigned int microseconds = 750;
+
+    for(int i = 0; i < 13; i++){
+
+        sem_wait(&FLAG);
+
+        outfile.open("STACK.txt", fstream::app);
+
+        cout << "Thread " << pthread_self() << " is running" << endl;
+
+        outfile << "Spade " << cards[i] << "\r\n";
+
+        outfile.close();
+
+        sem_post(&FLAG);
+
+        usleep(microseconds);
+    }
+        pthread_exit(NULL);
 }

@@ -3,10 +3,11 @@
 #include <semaphore.h>
 #include <pthread.h>
 #include <string>
+#include <unistd.h>
 
 #define NUM_THREADS 4
 
-void *diamond_Card(void *f);
+void *diamond_Card(void *i);
 void *club_Card(void *f);
 void *heart_Card(void *f);
 void *spade_Card(void *f);
