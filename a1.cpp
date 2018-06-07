@@ -27,7 +27,7 @@ int main () {
 
     outfile.close();
 
-    sem_init(&FLAG,0,1); //Initialize the FLAGb
+    sem_init(&FLAG,0,1); //Initialize the FLAG
 
     pthread_create(&player[0], NULL, &diamond_Card, NULL); //
     pthread_create(&player[1], NULL, &club_Card, NULL); //
@@ -48,8 +48,6 @@ int main () {
 
 void *diamond_Card(void *i){
 
-    unsigned int microseconds = 125;
-
     for(int i = 0; i < 13; i++){
 
         sem_wait(&FLAG);
@@ -64,15 +62,13 @@ void *diamond_Card(void *i){
 
         sem_post(&FLAG);
 
-        usleep(microseconds);
+        usleep(125);
     }
 
     pthread_exit(NULL);
 }
 
 void *club_Card(void *i){
-
-    unsigned int microseconds = 250;
 
     for(int i = 0; i < 13; i++){
 
@@ -88,14 +84,12 @@ void *club_Card(void *i){
 
         sem_post(&FLAG);
 
-        usleep(microseconds);
+        usleep(250);
     }
     pthread_exit(NULL);
 }
 
 void *heart_Card(void *i){
-
-    unsigned int microseconds = 500;
 
     for(int i = 0; i < 13; i++){
 
@@ -111,14 +105,12 @@ void *heart_Card(void *i){
 
         sem_post(&FLAG);
 
-        usleep(microseconds);
+        usleep(500);
     }
         pthread_exit(NULL);
 }
 
 void *spade_Card(void *i){
-
-    unsigned int microseconds = 750;
 
     for(int i = 0; i < 13; i++){
 
@@ -134,7 +126,7 @@ void *spade_Card(void *i){
 
         sem_post(&FLAG);
 
-        usleep(microseconds);
+        usleep(750);
     }
         pthread_exit(NULL);
 }
